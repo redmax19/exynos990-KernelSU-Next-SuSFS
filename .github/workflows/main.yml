@@ -1,0 +1,54 @@
+name: Build KernelSU-Next Galaxy S20
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: 'Modelo do dispositivo (g985f, g980f, g988b, g986b, g981b)'
+        required: true
+        default: 'g985f'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout do Código Fonte
+        uses: actions/checkout@v4
+
+      - name: Instalar Dependências do Sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential bc libncurses5-dev libssl-dev \
+            flex bison libelf-dev git ccache zip unzip bzip2
+
+      - name: Baixar e Configurar Toolchains (Clang 10 + GCC 4.9)
+        run: |
+          cd ..
+          mkdir -p tc
+          cd tc
+
+          echo ">> Baixando GCC 4.9..."
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 \
+            -b android10-mainline-release --depth 1 gcc49
+
+          echo ">> Baixando Clang 10 (r370808)..."
+          git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 \
+            -b android11-release --depth 1 clang-temp
+          
+          mv clang-temp/clang-r370808 clang10
+          rm -rf clang-temp
+
+          echo ">> Toolchains prontos em $(pwd)"
+
+      - name: Compilar Kernel
+        run: |
+          chmod +x build.sh
+          ./build.sh -m ${{ github.event.inputs.model }}
+
+      - name: Enviar Imagem Gerada (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Image-${{ github.event.inputs.model }}
+          path: out_${{ github.event.inputs.model }}/arch/arm64/boot/Image
+          
