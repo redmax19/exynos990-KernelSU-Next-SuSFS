@@ -1,10 +1,10 @@
-name: Build KernelSU-Next Galaxy S20
+name: Build KernelSU-Next Galaxy S20FE
 
 on:
   workflow_dispatch:
     inputs:
       model:
-        description: 'Modelo do dispositivo (g985f, g980f, g988b, g986b, g981b)'
+        description: 'Modelo do dispositivo (g985f, g780f, g988b, g986b, g981b)'
         required: true
         default: 'g985f'
 
