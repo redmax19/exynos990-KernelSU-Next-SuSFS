@@ -5,7 +5,7 @@
 #
 #  Usage:   ./build.sh -m <g985f|g980f|g988b|g986b|g981b>   (model number, as in Settings)
 #             g985f = Galaxy S20+ 4G   (SM-G985F)   [TESTED]
-#             g980f = Galaxy S20 4G    (SM-G980F)   [EXPERIMENTAL]
+#             g780f = Galaxy S20FE 4G    (SM-G780F)   [EXPERIMENTAL]
 #             g988b = Galaxy S20 Ultra (SM-G988B)   [EXPERIMENTAL]
 #             g986b = Galaxy S20+ 5G   (SM-G986B)   [EXPERIMENTAL]
 #             g981b = Galaxy S20 5G    (SM-G981B)   [EXPERIMENTAL]
@@ -25,7 +25,7 @@ MODEL=g985f
 while getopts "m:" o; do case $o in m) MODEL=$OPTARG ;; esac; done
 case "$MODEL" in
   g985f) BASE=exynos9830-y2slte_defconfig ;;
-  g980f) BASE=exynos9830-x1slte_defconfig ;;
+  g780f) BASE=exynos9830-r8slte_defconfig ;;
   g988b) BASE=exynos9830-z3sxxx_defconfig ;;
   g986b) BASE=exynos9830-y2sxxx_defconfig ;;
   g981b) BASE=exynos9830-x1sxxx_defconfig ;;
